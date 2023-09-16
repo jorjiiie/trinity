@@ -16,14 +16,15 @@ from Trinity_Backend import AiConvo
 sock = U.UdpComms(udpIP="127.0.0.1", portTX=8000, portRX=8001, enableRX=True, suppressWarnings=True)
 
 i = 0
+AiConvo = AiConvo.AiConvo()
 
 while True:
     sock.SendData('Sent from Python: ' + str(i)) # Send this string to other application
     i += 1
 
-    data = sock.ReadReceivedData() # read data
+    data = sock.ReadReceivedData() # read data "1 2"
 
     if data != None: # if NEW data has been received since last ReadReceivedData function call
-        print(data) # print new received data
+        convo_and_action = AiConvo.get_convo_and_action(data)
 
     time.sleep(1)

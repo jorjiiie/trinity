@@ -60,3 +60,5 @@ sysinfo.txt
 *.aab
 *.unitypackage
 *.app
+
+.env

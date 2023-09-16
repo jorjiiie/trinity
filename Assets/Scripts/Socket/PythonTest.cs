@@ -3,41 +3,43 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class PythonTest : MonoBehaviour
-{
-    [SerializeField] TextMeshProUGUI pythonRcvdText = null;
-    [SerializeField] TextMeshProUGUI sendToPythonText = null;
-
-    string tempStr = "Sent from Python xxxx";
-    int numToSendToPython = 0;
-    UdpSocket udpSocket;
-
-    public void QuitApp()
+namespace Socket {
+    public class PythonTest : MonoBehaviour
     {
-        print("Quitting");
-        Application.Quit();
-    }
+        [SerializeField] TextMeshProUGUI pythonRcvdText = null;
+        [SerializeField] TextMeshProUGUI sendToPythonText = null;
 
-    public void UpdatePythonRcvdText(string str)
-    {
-        tempStr = str;
-    }
+        string tempStr = "Sent from Python xxxx";
+        int numToSendToPython = 0;
+        UdpSocket udpSocket;
 
-    public void SendToPython()
-    {
-        udpSocket.SendData("Sent From Unity: " + numToSendToPython.ToString());
-        numToSendToPython++;
-        sendToPythonText.text = "Send Number: " + numToSendToPython.ToString();
-    }
+        public void QuitApp()
+        {
+            print("Quitting");
+            Application.Quit();
+        }
 
-    private void Start()
-    {
-        udpSocket = FindObjectOfType<UdpSocket>();
-        sendToPythonText.text = "Send Number: " + numToSendToPython.ToString();
-    }
+        public void UpdatePythonRcvdText(string str)
+        {
+            tempStr = str;
+        }
 
-    void Update()
-    {
-        pythonRcvdText.text = tempStr;
+        public void SendToPython()
+        {
+            udpSocket.SendData("Sent From Unity: " + numToSendToPython.ToString());
+            numToSendToPython++;
+            sendToPythonText.text = "Send Number: " + numToSendToPython.ToString();
+        }
+
+        private void Start()
+        {
+            udpSocket = FindObjectOfType<UdpSocket>();
+            sendToPythonText.text = "Send Number: " + numToSendToPython.ToString();
+        }
+
+        void Update()
+        {
+            pythonRcvdText.text = tempStr;
+        }
     }
 }

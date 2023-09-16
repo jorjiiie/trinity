@@ -25,6 +25,6 @@ while True:
     data = sock.ReadReceivedData() # read data "1 2"
 
     if data != None: # if NEW data has been received since last ReadReceivedData function call
-        convo_and_action = AiConvo.get_convo_and_action(data)
+        convo_and_action = AiConvo.get_convo_and_action(str(data))
 
     time.sleep(1)

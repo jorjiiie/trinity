@@ -109,6 +109,7 @@ class AiConvo():
         print(self.convo)
         action1, action2 = self.get_react(id1, id2)
         convo_and_action = convo + "^" + id1 + "^" + action1 + "^" + id2 + "^" + action2
+        self.summarize(id1, id2)
         # convo_and_action = "Conversation^" + convo + "^Action%1^" + action1 + "/nAction%2^" + action2
         return convo_and_action
     
@@ -198,14 +199,16 @@ class AiConvo():
 
 aiconvo = AiConvo()
 aiconvo.get_script()
+
 print(aiconvo.get_convo_and_action("1 3"))
-aiconvo.summarize("1","3")
-
-# print(aiconvo.get_convo_and_action("1 2"))
-# aiconvo.summarize("1","2")
-
-# print(aiconvo.get_convo_and_action("1 2"))
-# aiconvo.summarize("1","2")
+print(aiconvo.get_convo_and_action("1 3"))
+print(aiconvo.get_convo_and_action("1 3"))
+print(aiconvo.get_convo_and_action("1 3"))
+print(aiconvo.get_convo_and_action("1 3"))
+print(aiconvo.get_convo_and_action("1 3"))
+print(aiconvo.get_convo_and_action("1 3"))
+print(aiconvo.get_convo_and_action("1 3"))
+print(aiconvo.get_convo_and_action("1 3"))
 
 
 # summarizePrompt = PromptTemplate.from_template("{name1} and {name2} are meeting at {location}. {name1} is {personality1}, and {name2} is {personality2}. From {name1}'s previous interactions with {name2}, {name1} thinks the following about {name2}: {oneThinkTwo}. From {name2}'s previous interactions with {name1}, {name2} thinks the following about {name1}: {twoThinkOne}. The conversation they just had was the following: {conversation}, and in response {name1} did this: {name1action} while {name2} did this: {name2action}. Please provide a full summary of the interactions, incorporating previous interaction information as well as the most recent one into a single summary, and factor in {name1}'s personality traits as influencing the summary.")

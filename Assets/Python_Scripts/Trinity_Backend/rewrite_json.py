@@ -17,8 +17,6 @@ def rewrite_json(iter: int, script):
         json.dump(script, f)
 
 
-
-
 # def store_record(iter: int, info: dict(), id1: str, id2: str):
 #     """
 #     iter: # calls to this function so far, used to create a custom directory to store the json

@@ -25,5 +25,6 @@ while True:
         agent.get_script()
         convo_and_action = agent.get_convo_and_action(str(data))
         sock.SendData(convo_and_action) # Send this string to other application
+        agent.tts()
 
     time.sleep(1)

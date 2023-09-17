@@ -8,7 +8,7 @@ import nltk
 import numpy as np
 import os
 from nltk.sentiment import SentimentIntensityAnalyzer
-import rewrite_json
+from . import rewrite_json
 
 dirname = os.path.dirname(__file__)
 path = os.path.join(dirname, "env.json")
@@ -57,9 +57,9 @@ class AiConvo():
                                 twoThinkOne = twoThinkOne
                                 )
 
-    def get_script(self, file_name="silicon_valley_ex.json"):
+    def get_script(self):
         dirname = os.path.dirname(__file__)
-        path = os.path.join(dirname, "history/"+file_name)
+        path = os.path.join(dirname, "history\\silicon_valley_ex.json")
         with open(path,"r") as f:
             self.script = json.load(f)        
         with open(os.path.join(dirname,"information/reactions.json"),"r") as f:
@@ -79,9 +79,10 @@ class AiConvo():
         #sample input:"1 2"
         id1, id2 = characters.split(" ")
         convo = self.get_convo(id1, id2)
-        if len(convo) > self.convo_length:
-            convo = convo[:self.convo_length]
+        # if len(convo) > self.convo_length:
+        #     convo = convo[:self.convo_length]
         self.convo = convo
+        print(self.convo)
         action1, action2 = self.get_react(id1, id2)
         convo_and_action = "Conversation^" + convo + "/nAction%1^" + action1 + "/nAction%2^" + action2
         return convo_and_action
@@ -165,16 +166,16 @@ class AiConvo():
         return (self.cur_action[id1], self.cur_action[id2])
 
 
-aiconvo = AiConvo()
-aiconvo.get_script(file_name="silicon_valley_og.json")
-print(aiconvo.get_convo_and_action("1 2"))
-aiconvo.summarize("1","2")
+# aiconvo = AiConvo()
+# aiconvo.get_script(file_name="silicon_valley_og.json")
+# print(aiconvo.get_convo_and_action("1 2"))
+# aiconvo.summarize("1","2")
 
-print(aiconvo.get_convo_and_action("1 2"))
-aiconvo.summarize("1","2")
+# print(aiconvo.get_convo_and_action("1 2"))
+# aiconvo.summarize("1","2")
 
-print(aiconvo.get_convo_and_action("1 2"))
-aiconvo.summarize("1","2")
+# print(aiconvo.get_convo_and_action("1 2"))
+# aiconvo.summarize("1","2")
 
 
 # summarizePrompt = PromptTemplate.from_template("{name1} and {name2} are meeting at {location}. {name1} is {personality1}, and {name2} is {personality2}. From {name1}'s previous interactions with {name2}, {name1} thinks the following about {name2}: {oneThinkTwo}. From {name2}'s previous interactions with {name1}, {name2} thinks the following about {name1}: {twoThinkOne}. The conversation they just had was the following: {conversation}, and in response {name1} did this: {name1action} while {name2} did this: {name2action}. Please provide a full summary of the interactions, incorporating previous interaction information as well as the most recent one into a single summary, and factor in {name1}'s personality traits as influencing the summary.")

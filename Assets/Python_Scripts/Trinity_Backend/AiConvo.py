@@ -73,8 +73,8 @@ class AiConvo():
                                   )
 
     def get_script(self):
-        dirname = os.path.dirname(__file__)
-        path = os.path.join(dirname, "history/silicon_valley_ex.json")
+        dirname = os.path.join(os.path.dirname(__file__), "history")
+        path = os.path.join(dirname, "silicon_valley_ex.json")
         with open(path,"r") as f:
             self.script = json.load(f)        
         with open(os.path.join(dirname,"information/reactions.json"),"r") as f:

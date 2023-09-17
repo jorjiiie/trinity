@@ -37,13 +37,13 @@ namespace AiCharacter {
 
                     higherId.SendData(this.name + " " + obj.name);
 
-                    while (ReceiveData() == "") {
-                        this.GetComponent<RandomMovement>().enabled = false;
-                        obj.GetComponent<RandomMovement>().enabled = false;
-                    }
+                    // while (ReceiveData() == "") {
+                    //     this.GetComponent<RandomMovement>().enabled = false;
+                    //     obj.GetComponent<RandomMovement>().enabled = false;
+                    // }
 
-                    this.GetComponent<RandomMovement>().enabled = true;
-                    obj.GetComponent<RandomMovement>().enabled = true;
+                    // this.GetComponent<RandomMovement>().enabled = true;
+                    // obj.GetComponent<RandomMovement>().enabled = true;
                     objCommunicate.talking = false;
                     this.talking = false;
                 }
@@ -55,9 +55,9 @@ namespace AiCharacter {
             socket.SendData(data);
         }
 
-        string ReceiveData()
-        {
-            return socket.receivedText;
-        }
+        // string ReceiveData()
+        // {
+        //     return socket.receivedText;
+        // }
     }
 }

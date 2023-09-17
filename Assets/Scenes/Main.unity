@@ -548,7 +548,7 @@ GameObject:
   - component: {fileID: 43903141}
   - component: {fileID: 43903142}
   m_Layer: 0
-  m_Name: Character2
+  m_Name: 2
   m_TagString: AI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -675,6 +675,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetTag: AI
   proximityDistance: 2
+  socket: {fileID: 499755629}
 --- !u!1001 &57931470
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3929,6 +3930,55 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4128306671338548, guid: 4bfd76daaa0019345a2683685787cf68, type: 3}
   m_PrefabInstance: {fileID: 492035774}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &499755628
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 499755630}
+  - component: {fileID: 499755629}
+  m_Layer: 0
+  m_Name: UdpSocket
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &499755629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 499755628}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52395b768bff51b47b52a369e1d969a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isTxStarted: 0
+  IP: 127.0.0.1
+  rxPort: 8000
+  txPort: 8001
+  receivedText: 
+--- !u!4 &499755630
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 499755628}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 12
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &502964944
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9690,7 +9740,7 @@ GameObject:
   - component: {fileID: 1149984539}
   - component: {fileID: 1149984544}
   m_Layer: 0
-  m_Name: Character1
+  m_Name: 1
   m_TagString: AI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9817,6 +9867,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetTag: AI
   proximityDistance: 2
+  socket: {fileID: 499755629}
 --- !u!1001 &1152196261
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18312,7 +18363,7 @@ GameObject:
   - component: {fileID: 2084029504}
   - component: {fileID: 2084029505}
   m_Layer: 0
-  m_Name: Character3
+  m_Name: 3
   m_TagString: AI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18439,6 +18490,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetTag: AI
   proximityDistance: 2
+  socket: {fileID: 499755629}
 --- !u!1 &2093658330
 GameObject:
   m_ObjectHideFlags: 0

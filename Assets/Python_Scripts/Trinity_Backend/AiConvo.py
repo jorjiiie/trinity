@@ -4,13 +4,15 @@ from langchain.chat_models import ChatOpenAI
 from langchain.prompts import PromptTemplate
 from langchain.output_parsers import ResponseSchema, StructuredOutputParser
 from langchain.chains import LLMChain
+import os
 
+dirname = os.path.dirname(__file__)
+path = os.path.join(dirname, "env.json")
+with open(path, 'r') as json_file:
+    env_dict = json.load(json_file)
+openai_api = env_dict["OPEN_AI_API"]
 
-# with open('env.json', 'r') as json_file:
-#     env_dict = json.load(json_file)
-# openai_api = env_dict["OPEN_AI_API"]
-
-# chat_model = ChatOpenAI(openai_api_key=openai_api)
+chat_model = ChatOpenAI(openai_api_key=openai_api)
 
 class AiConvo():
     def __init__(self):
@@ -31,7 +33,7 @@ class AiConvo():
         oneThinkTwo = data[id1]["interactions"][id2]
         twoThinkOne = data[id2]["interactions"][id1]
 
-        return self.talkPrompt.format(name1=name1, 
+        return self.talkPrompt.format(name1=name1,
                                 name2=name2,
                                 personality1=personality1, 
                                 personality2 = personality2,
@@ -40,11 +42,13 @@ class AiConvo():
                                 )
 
     def get_script(self):
-        with open("Assets/Python_Scripts/Trinity_Backend/history/silicon_valley_ex.json","r") as f:
+        dirname = os.path.dirname(__file__)
+        path = os.path.join(dirname, "history/silicon_valley_ex.json")
+        with open(path,"r") as f:
             self.script = json.load(f)        
 
     def get_convo(self, id1:str, id2:str) -> str:
-        chat_model = ChatOpenAI()
+        # chat_model = ChatOpenAI()
         self.get_script()
         input_prompt = self.getTalkPrompt(id1,id2, self.script)
         response = chat_model.predict(text=input_prompt)        

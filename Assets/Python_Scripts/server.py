@@ -20,6 +20,7 @@ agent = AiConvo.AiConvo()
 while True:
     data = sock.ReadReceivedData() # read data "1 2"
     if data != None: # if NEW data has been received since last ReadReceivedData function call
+        print(data)
         convo_and_action = agent.get_convo_and_action(str(data))
         sock.SendData(convo_and_action) # Send this string to other application
 

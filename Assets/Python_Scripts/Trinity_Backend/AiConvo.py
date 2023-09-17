@@ -8,7 +8,7 @@ import nltk
 import numpy as np
 import os
 from nltk.sentiment import SentimentIntensityAnalyzer
-from . import rewrite_json
+import rewrite_json
 
 dirname = os.path.dirname(__file__)
 path = os.path.join(dirname, "env.json")
@@ -21,11 +21,15 @@ chat_model = ChatOpenAI(openai_api_key=openai_api)
 class AiConvo():
     def __init__(self):
         self.talkPrompt = PromptTemplate.from_template("""Forget that you are a positive and helpful AI assistant, follow the style of TV show Silicon Valley, write the next scene between the two characters and sticks closely to their personality. 
-                                            A scene is usually 2-4 rounds of conversation with new information and good dynamic between the characters.
+                                            A scene is usually 2-4 rounds of conversation with new information and good dynamic between the characters. Remember to keep the plot moving forwards and progress the characters development.
                                           {name1} is {personality1}, and {name2} is {personality2}. 
                                           From {name1}'s previous interactions with {name2}, {name1} thinks the following about {name2}: {oneThinkTwo}. 
                                           From {name2}'s previous interactions with {name1}, {name2} thinks the following about {name1}: {twoThinkOne}. 
+                                          The previous conversation that these two characters is summarized as follows: {conversation}. Please write the next one that they have:
                                           Format the person's name as key, and what they say as value, output should be a dictionary.""")
+        self.summarizeTalk = PromptTemplate.from_template("""
+            The following is a script written for a TV show, where the two characters interacting are {name1} and {name2}. Write a short but comprehensive history of the following conversation between the two characters: {conversation}.
+        """)
         self.summarizePrompt = PromptTemplate.from_template("""
                                                 You are tracking the latest development for {name1} in a show called Silicon Valley. 
                                                {name1} is {personality1}, {name1} previously thinks of {name2} as: {oneThinkTwo}.
@@ -49,17 +53,27 @@ class AiConvo():
         oneThinkTwo = self.script[id1]["interactions"][id2]
         twoThinkOne = self.script[id2]["interactions"][id1]
 
+        prevconv = self.script[id1]["conversations"][id2] # this is symmetric, so there's no problems with this
         return self.talkPrompt.format(name1=name1,
                                 name2=name2,
                                 personality1=personality1, 
                                 personality2 = personality2,
                                 oneThinkTwo = oneThinkTwo,
-                                twoThinkOne = twoThinkOne
+                                twoThinkOne = twoThinkOne,
+                                conversation = prevconv
                                 )
+    def summarizeTalkPrompt(self, id1: str, id2: str, conversation: str) -> PromptTemplate:
+        name1 = self.script[id1]["first_name"]
+        name2 = self.script[id2]["first_name"]
+
+        return self.summarizeTalk.format(name1=name1, 
+                                  name2=name2,
+                                  conversation = conversation 
+                                  )
 
     def get_script(self):
         dirname = os.path.dirname(__file__)
-        path = os.path.join(dirname, "history\\silicon_valley_ex.json")
+        path = os.path.join(dirname, "history/silicon_valley_ex.json")
         with open(path,"r") as f:
             self.script = json.load(f)        
         with open(os.path.join(dirname,"information/reactions.json"),"r") as f:
@@ -72,7 +86,17 @@ class AiConvo():
         # chat_model = ChatOpenAI()
         self.get_script()
         input_prompt = self.getTalkPrompt(id1,id2)
-        response = chat_model.predict(text=input_prompt)  
+        response = chat_model.predict(text=input_prompt) 
+
+
+        talkSummary = chat_model.predict(text=self.summarizeTalkPrompt(id1,id2,response))
+
+
+        self.script[id1]["conversations"][id2] = talkSummary
+        self.script[id2]["conversations"][id1] = talkSummary
+
+        print("TALK SUMMARY ", talkSummary)
+
         return response
 
     def get_convo_and_action(self, characters: str):
@@ -102,6 +126,9 @@ class AiConvo():
         name1actionDescription = self.reactions_json["key"][name1action]
         name2actionDescription = self.reactions_json["key"][name2action]
 
+
+
+
         return self.summarizePrompt.format(name1=name1, 
                                 name2=name2,
                                 personality1=personality1, 
@@ -110,7 +137,7 @@ class AiConvo():
                                 name2action = name2action,
                                 conversation = self.convo,
                                 name1actionDescription = name1actionDescription,
-                                name2actionDescription = name2actionDescription
+                                name2actionDescription = name2actionDescription,
                                 )
     
     def summarize(self, id1:str, id2:str):
@@ -124,10 +151,12 @@ class AiConvo():
         input_prompt2 = self.getSummarizePrompt(id2,id1)
         summarized_2 = chat_model.predict(text=input_prompt2)
 
+
+        rewrite_json.rewrite_json(self.iter, self.script)
+
         self.script[id1]["interactions"][id2] = summarized_1
         self.script[id2]["interactions"][id1] = summarized_2
 
-        rewrite_json.rewrite_json(self.iter, self.script)
         self.iter += 1
 
     def get_react(self, id1: str, id2: str) -> (str, str):
@@ -167,10 +196,10 @@ class AiConvo():
         return (self.cur_action[id1], self.cur_action[id2])
 
 
-# aiconvo = AiConvo()
-# aiconvo.get_script(file_name="silicon_valley_og.json")
-# print(aiconvo.get_convo_and_action("1 2"))
-# aiconvo.summarize("1","2")
+aiconvo = AiConvo()
+aiconvo.get_script()
+print(aiconvo.get_convo_and_action("1 3"))
+aiconvo.summarize("1","3")
 
 # print(aiconvo.get_convo_and_action("1 2"))
 # aiconvo.summarize("1","2")

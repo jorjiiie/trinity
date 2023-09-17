@@ -86,6 +86,12 @@ class AiConvo():
 
         actions = []
         for i in range(2):
+
+            if self.script[ids[i]]["fixed_reaction"] != "none":
+                actions.append(np.array([self.script[ids[i]]["fixed_reaction"]]))
+                self.script[ids[i]] = "none"
+                continue
+
             personality_probabilities = [self.script[ids[i]]["reactions"][item] for item in self.reactions_list]
 
             sia = SentimentIntensityAnalyzer()
@@ -99,7 +105,6 @@ class AiConvo():
             PDF = PDF / np.sum(PDF)
 
             # can just replace the i for i ... with just the list of reactions LOL
-
             x = np.random.choice(self.reactions_list,size=1, p = PDF)
 
             actions.append(x)
@@ -107,9 +112,10 @@ class AiConvo():
         return (actions[0][0], actions[1][0])
 
 
+aiconvo = AiConvo()
+aiconvo.get_script()
 
-AiConvo = AiConvo()
-print(AiConvo.get_convo_and_action("1 2"))
+print(aiconvo.get_react("this is a very cool sentence and i am very happy","1","2"))
 
 
 # summarizePrompt = PromptTemplate.from_template("{name1} and {name2} are meeting at {location}. {name1} is {personality1}, and {name2} is {personality2}. From {name1}'s previous interactions with {name2}, {name1} thinks the following about {name2}: {oneThinkTwo}. From {name2}'s previous interactions with {name1}, {name2} thinks the following about {name1}: {twoThinkOne}. The conversation they just had was the following: {conversation}, and in response {name1} did this: {name1action} while {name2} did this: {name2action}. Please provide a full summary of the interactions, incorporating previous interaction information as well as the most recent one into a single summary, and factor in {name1}'s personality traits as influencing the summary.")

@@ -20,7 +20,8 @@
             "like": 0.1,
             "annoyance": 0, 
             "bored": 0.05 
-        }
+        },
+        "fixed_reaction": "shout"
     },
     "2": {
         "first_name": "Dinesh",
@@ -43,7 +44,9 @@
             "like": 0.1,
             "annoyance": 0.1, 
             "bored": 0 
-        }
+        },
+        "fixed_reaction": "none"
+
     },
     "3": {
         "first_name": "Bertram",
@@ -66,6 +69,7 @@
             "like": 0.1,
             "annoyance": 0.3, 
             "bored": 0.05 
-        }
+        },
+        "fixed_reaction": "none"
     }
 }

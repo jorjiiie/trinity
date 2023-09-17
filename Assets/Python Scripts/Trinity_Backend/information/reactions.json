@@ -1,0 +1,26 @@
+{"key": {
+    "shout": "shouting and harsh insults",
+    "threat": "threatening body language",
+    "storming": "storming off in anger",
+    "resentment": "negative sentiments and resentmet",
+    "leaving": "saying goodbye neutrally",
+    "hugging": "hugging",
+    "kissing": "giving a little smooch",
+    "like": "taking a liking in each other",
+    "annoyance": "mild annoyance", 
+    "bored": "falling asleep to a conversation" 
+},
+
+"sco": {
+    "shout": -0.8,
+    "threat": -1,
+    "storming": -0.6,
+    "resentment": -0.4,
+    "leaving": 0.2,
+    "hugging": 0.8,
+    "kissing": 1,
+    "like": 0.6,
+    "annoyance": -0.2, 
+    "bored": 0
+}
+}

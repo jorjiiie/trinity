@@ -4,7 +4,10 @@ from langchain.chat_models import ChatOpenAI
 from langchain.prompts import PromptTemplate
 from langchain.output_parsers import ResponseSchema, StructuredOutputParser
 from langchain.chains import LLMChain
+import nltk
+import numpy as np
 import os
+from nltk.sentiment import SentimentIntensityAnalyzer
 
 dirname = os.path.dirname(__file__)
 path = os.path.join(dirname, "env.json")
@@ -46,6 +49,11 @@ class AiConvo():
         path = os.path.join(dirname, "history/silicon_valley_ex.json")
         with open(path,"r") as f:
             self.script = json.load(f)        
+        with open(os.path.join(dirname,"information/reactions.json"),"r") as f:
+            self.reactions_json = json.load(f)    
+        self.reactions_list = [item for item in self.reactions_json["key"].keys()]
+        self.reactions_values = [self.reactions_json["score"][item] for item in self.reactions_list]
+
 
     def get_convo(self, id1:str, id2:str) -> str:
         # chat_model = ChatOpenAI()
@@ -64,7 +72,43 @@ class AiConvo():
         convo = self.get_convo(id1, id2)
         convo_and_action = "Conversation^" + convo
         return convo_and_action
+    
 
+    def react(self, conversation: str, id1: str, id2: str) -> (str, str):
+        """Given a conversation and two people's ids, calculate their reactions"""
+
+        def normal_distribution(x , mean , sd):
+            prob_density = (np.pi*sd) * np.exp(-0.5*((x-mean)/sd)**2)
+            return prob_density
+
+        ids = [id1, id2]
+
+        actions = []
+        for i in range(2):
+            personality_probabilities = [self.script[ids[i]]["reactions"][item] for item in self.reactions_list]
+
+            sia = SentimentIntensityAnalyzer()
+            score = sia.polarity_scores(conversation)['compound']
+            print(score)
+
+            PDF = normal_distribution(np.array(self.reactions_values), score, 0.2)
+            PDF = [PDF[i] * personality_probabilities[i] for i in range(len(PDF))]
+            
+            # normalize the pdf LOL
+            PDF = PDF / np.sum(PDF)
+
+            # can just replace the i for i ... with just the list of reactions LOL
+
+            x = np.random.choice(self.reactions_list,size=1, p = PDF)
+
+            actions.append(x)
+
+        return (actions[0], actions[1])
+
+
+convo = AiConvo()
+convo.get_script()
+print(convo.react("dinesh was very nice today (/s)", "1", "2"))
 # AiConvo = AiConvo()
 # print(AiConvo.get_convo_and_action("1 2"))
 

@@ -84,7 +84,8 @@ class AiConvo():
         self.convo = convo
         print(self.convo)
         action1, action2 = self.get_react(id1, id2)
-        convo_and_action = "Conversation^" + convo + "/nAction%1^" + action1 + "/nAction%2^" + action2
+        convo_and_action = convo + "^" + id1 + "^" + action1 + "^" + id2 + "^" + action2
+        # convo_and_action = "Conversation^" + convo + "^Action%1^" + action1 + "/nAction%2^" + action2
         return convo_and_action
     
     def getSummarizePrompt(self, id1: str, id2: str) -> PromptTemplate:

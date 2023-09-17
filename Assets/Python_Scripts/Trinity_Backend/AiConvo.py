@@ -8,8 +8,8 @@ import nltk
 import numpy as np
 import os
 from nltk.sentiment import SentimentIntensityAnalyzer
-import rewrite_json
-import tts
+from . import rewrite_json
+from . import tts
 
 dirname = os.path.dirname(__file__)
 path = os.path.join(dirname, "env.json")
@@ -191,7 +191,6 @@ class AiConvo():
         self.cur_action[id2] = actions[1][0]
         return (self.cur_action[id1], self.cur_action[id2])
 
-<<<<<<< HEAD
 
 # aiconvo = AiConvo()
 # aiconvo.get_script()
@@ -203,11 +202,6 @@ class AiConvo():
 # print(aiconvo.get_convo_and_action("1 3"))
 
 # summarizePrompt = PromptTemplate.from_template("{name1} and {name2} are meeting at {location}. {name1} is {personality1}, and {name2} is {personality2}. From {name1}'s previous interactions with {name2}, {name1} thinks the following about {name2}: {oneThinkTwo}. From {name2}'s previous interactions with {name1}, {name2} thinks the following about {name1}: {twoThinkOne}. The conversation they just had was the following: {conversation}, and in response {name1} did this: {name1action} while {name2} did this: {name2action}. Please provide a full summary of the interactions, incorporating previous interaction information as well as the most recent one into a single summary, and factor in {name1}'s personality traits as influencing the summary.")
-=======
-# aiconvo = AiConvo()
-# print(aiconvo.get_convo_and_action("1 2"))
-# aiconvo.tts(aiconvo.convo)
->>>>>>> 36034f4de3963e54ab1318bc0aabbb2face3df49
 
 
 

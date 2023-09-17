@@ -82,33 +82,26 @@ class AiConvo():
         self.reactions_values = [self.reactions_json["score"][item] for item in self.reactions_list]
 
 
-    def get_convo(self, id1:str, id2:str) -> str:
+    def get_convo(self, id1:str, id2:str):
         # chat_model = ChatOpenAI()
         self.get_script()
         input_prompt = self.getTalkPrompt(id1,id2)
-        response = chat_model.predict(text=input_prompt) 
-
-
-        talkSummary = chat_model.predict(text=self.summarizeTalkPrompt(id1,id2,response))
-
-
-        self.script[id1]["conversations"][id2] = talkSummary
-        self.script[id2]["conversations"][id1] = talkSummary
-
-        print("TALK SUMMARY ", talkSummary)
-
-        return response
+        self.convo = chat_model.predict(text=input_prompt) 
 
     def get_convo_and_action(self, characters: str):
         #sample input:"1 2"
         id1, id2 = characters.split(" ")
-        convo = self.get_convo(id1, id2)
         # if len(convo) > self.convo_length:
         #     convo = convo[:self.convo_length]
-        self.convo = convo
         print(self.convo)
         action1, action2 = self.get_react(id1, id2)
-        convo_and_action = convo + "^" + id1 + "^" + action1 + "^" + id2 + "^" + action2
+
+        talkSummary = f"{chat_model.predict(text=self.summarizeTalkPrompt(id1,id2,self.convo))}. Character {id1}'s reaction was {action1}. Character {id2}'s reaction was {action2}"
+
+        self.script[id1]["conversations"][id2] = talkSummary
+        self.script[id2]["conversations"][id1] = talkSummary
+        
+        convo_and_action = self.convo + "^" + id1 + "^" + action1 + "^" + id2 + "^" + action2
         self.summarize(id1, id2)
         # convo_and_action = "Conversation^" + convo + "^Action%1^" + action1 + "/nAction%2^" + action2
         return convo_and_action
@@ -126,9 +119,6 @@ class AiConvo():
         name2action = self.cur_action[id2]
         name1actionDescription = self.reactions_json["key"][name1action]
         name2actionDescription = self.reactions_json["key"][name2action]
-
-
-
 
         return self.summarizePrompt.format(name1=name1, 
                                 name2=name2,
@@ -205,11 +195,6 @@ print(aiconvo.get_convo_and_action("1 3"))
 print(aiconvo.get_convo_and_action("1 3"))
 print(aiconvo.get_convo_and_action("1 3"))
 print(aiconvo.get_convo_and_action("1 3"))
-print(aiconvo.get_convo_and_action("1 3"))
-print(aiconvo.get_convo_and_action("1 3"))
-print(aiconvo.get_convo_and_action("1 3"))
-print(aiconvo.get_convo_and_action("1 3"))
-
 
 # summarizePrompt = PromptTemplate.from_template("{name1} and {name2} are meeting at {location}. {name1} is {personality1}, and {name2} is {personality2}. From {name1}'s previous interactions with {name2}, {name1} thinks the following about {name2}: {oneThinkTwo}. From {name2}'s previous interactions with {name1}, {name2} thinks the following about {name1}: {twoThinkOne}. The conversation they just had was the following: {conversation}, and in response {name1} did this: {name1action} while {name2} did this: {name2action}. Please provide a full summary of the interactions, incorporating previous interaction information as well as the most recent one into a single summary, and factor in {name1}'s personality traits as influencing the summary.")
 

@@ -81,7 +81,6 @@ class AiConvo():
         self.reactions_list = [item for item in self.reactions_json["key"].keys()]
         self.reactions_values = [self.reactions_json["score"][item] for item in self.reactions_list]
 
-
     def get_convo(self, id1:str, id2:str):
         # chat_model = ChatOpenAI()
         self.get_script()
@@ -91,6 +90,7 @@ class AiConvo():
     def get_convo_and_action(self, characters: str):
         #sample input:"1 2"
         id1, id2 = characters.split(" ")
+        self.get_convo(id1, id2)
         # if len(convo) > self.convo_length:
         #     convo = convo[:self.convo_length]
         print(self.convo)

@@ -3,7 +3,7 @@ import os
 
 def rewrite_json(iter: int, script):
     path = "history/silicon_valley_ex.json"
-    record_path = f"history/record_{iter}"
+    record_path = f"history/record_{iter}.json"
 
 
     dirname = os.path.dirname(__file__)

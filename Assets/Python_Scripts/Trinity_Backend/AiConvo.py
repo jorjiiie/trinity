@@ -8,7 +8,7 @@ import nltk
 import numpy as np
 import os
 from nltk.sentiment import SentimentIntensityAnalyzer
-import rewrite_json
+from . import rewrite_json
 
 dirname = os.path.dirname(__file__)
 path = os.path.join(dirname, "env.json")
